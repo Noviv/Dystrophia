@@ -25,5 +25,5 @@ void main(void) {
     );
 
     gl_Position = vec4(constRot * window_scale * rotation * in_Position.xyz, 2.0);
-    pass_Color = vec4(1.0, 0.0, 0.0, 1.0);
+    pass_Color = in_Color;
 }

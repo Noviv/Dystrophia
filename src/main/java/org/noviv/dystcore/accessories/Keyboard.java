@@ -1,37 +1,26 @@
 package org.noviv.dystcore.accessories;
 
-import java.util.HashMap;
-import java.util.function.Consumer;
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWKeyCallback;
 
-import static org.lwjgl.glfw.GLFW.glfwSetKeyCallback;
 import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
+import static org.lwjgl.glfw.GLFW.glfwSetKeyCallback;
 
 public class Keyboard {
 
-    private static HashMap<Integer, Consumer> map;
+    private static boolean[] keys;
 
     private static GLFWKeyCallback keyCallback;
 
     public static void init(long handle) {
-        map = new HashMap<>();
+       keys = new boolean[GLFW.GLFW_KEY_LAST + 1];
 
         glfwSetKeyCallback(handle, keyCallback = new GLFWKeyCallback() {
             @Override
             public void invoke(long window, int key, int scancode, int action, int mods) {
-                if (action == GLFW_RELEASE) {
-                    return;
-                }
-                Consumer c = map.get(key);
-                if (c != null) {
-                    c.accept(c);
-                }
+                keys[key] = action != GLFW_RELEASE;
             }
         });
-    }
-
-    public static void appendConsumer(int key, Consumer cons) {
-        map.put(key, cons);
     }
 
     public static void terminate() {
