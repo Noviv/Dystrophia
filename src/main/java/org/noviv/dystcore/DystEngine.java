@@ -1,87 +1,141 @@
 package org.noviv.dystcore;
 
+import java.util.ArrayList;
 import org.lwjgl.opengl.GL;
-import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
+import org.noviv.dystcore.accessories.DystTimer;
+import org.noviv.dystcore.objects.DystObject;
+import org.noviv.dystcore.accessories.Keyboard;
+import org.noviv.dystcore.exceptions.DystException;
 
 import static org.lwjgl.glfw.GLFW.*;
-import org.lwjgl.glfw.GLFWKeyCallback;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
+import org.noviv.dystcore.accessories.Screen;
+import org.noviv.dystcore.accessories.SystemAccessories;
 
 public class DystEngine {
+
+    private final Thread updateThread;
+    private final Thread renderThread;
+
+    private final ArrayList<DystObject> objects;
 
     private long handle;
     private boolean running;
 
-    private int width;
-    private int height;
-    private boolean resized;
-
     public DystEngine() {
-        width = 640;
-        height = 480;
-        resized = false;
+        objects = new ArrayList<>();
 
-        init();
-    }
-
-    private void init() {
-        glfwInit();
-        handle = glfwCreateWindow(width, height, "Title", NULL, NULL);
-        glfwMakeContextCurrent(handle);
-        GL.createCapabilities();
-
-        glfwSetFramebufferSizeCallback(handle, new GLFWFramebufferSizeCallback() {
-            @Override
-            public void invoke(long window, int w, int h) {
-                width = w;
-                height = h;
-                resized = true;
-            }
+        updateThread = new Thread(() -> {
+            updateLoop();
         });
+        updateThread.setName("Dystrophia Update Thread");
 
-        glfwSetKeyCallback(handle, new GLFWKeyCallback() {
-            @Override
-            public void invoke(long window, int key, int scancode, int action, int mods) {
-            }
+        renderThread = new Thread(() -> {
+            init();
+            updateThread.start();
+            renderLoop();
         });
-
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-
-        running = true;
+        renderThread.setName("Dystrophia Render Thread");
     }
 
     public void run() {
+        renderThread.start();
+    }
+
+    public void addObject(DystObject object) {
+        if (object == null) {
+            throw new DystException("Added a null object");
+        }
+        objects.add(object);
+    }
+
+    private void init() {
+        int width = 1280;
+        int height = 720;
+
+        if (!glfwInit()) {
+            throw new DystException("Could not init GLFW");
+        }
+
+        //init
+        handle = glfwCreateWindow(width, height, "Title", NULL, NULL);
+        if (handle == NULL) {
+            throw new DystException("Could not create window");
+        }
+
+        glfwMakeContextCurrent(handle);
+        GL.createCapabilities();
+
+        //post init
+        resize();
+
+        glfwSetWindowPos(handle, Screen.getCenterX(width), Screen.getCenterY(height));
+
+        //finalize
+        SystemAccessories.init(handle, width, height);
+        objects.forEach((object) -> object.init());
+        running = true;
+    }
+
+    private void updateLoop() {
+        DystTimer timer = new DystTimer();
+
+        while (running) {
+            objects.forEach((object) -> object.update(timer.getDT()));
+        }
+    }
+
+    private void renderLoop() {
         while (running) {
             if (glfwWindowShouldClose(handle)) {
                 running = false;
             }
-            prerender();
-            render();
-            postrender();
+            //pre render
+            glfwPollEvents();
+            glClear(GL_COLOR_BUFFER_BIT);
+
+            if (Screen.isResized()) {
+                resize();
+                Screen.clear();
+            }
+
+            //render
+            objects.forEach((object) -> object.render());
+
+            //post render
+            glfwSwapBuffers(handle);
         }
 
         terminate();
     }
 
-    private void prerender() {
-        if (resized) {
-            resized = false;
-            glViewport(0, 0, width, height);
+    private void terminate() {
+        running = false;
+
+        try {
+            renderThread.interrupt();
+            updateThread.interrupt();
+        } catch (Exception e) {
+            throw new DystException(e);
         }
 
-        glfwPollEvents();
-        glClear(GL_COLOR_BUFFER_BIT);
-    }
+        SystemAccessories.terminate();
 
-    private void render() {
-    }
-
-    private void postrender() {
-        glfwSwapBuffers(handle);
-    }
-
-    private void terminate() {
+        glfwDestroyWindow(handle);
         glfwTerminate();
+    }
+
+    private void resize() {
+        glViewport(0, 0, Screen.getWidth(), Screen.getHeight());
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        if (Screen.getAspectRatio() >= 1.0) {
+            glOrtho(-Screen.getAspectRatio(), Screen.getAspectRatio(), -1, 1, 0, 1);
+        } else {
+            glOrtho(1.0 / -Screen.getAspectRatio(), 1.0 / Screen.getAspectRatio(), -1, 1, 0, 1);
+        }
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
     }
 }
