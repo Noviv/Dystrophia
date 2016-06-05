@@ -33,9 +33,6 @@ public class Keyboard {
     }
 
     public static void terminate() {
-        if (keyCallback != null) {
-            keyCallback.free();
-        }
     }
 
     private Keyboard() {

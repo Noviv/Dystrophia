@@ -1,6 +1,5 @@
 package org.noviv.dystcore.accessories;
 
-import org.joml.Vector2d;
 import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWCursorEnterCallback;
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
@@ -30,8 +29,8 @@ public class Mouse {
         });
         glfwSetCursorEnterCallback(handle, cursorEnterCallback = new GLFWCursorEnterCallback() {
             @Override
-            public void invoke(long window, boolean entered) {
-                inWindow = entered;
+            public void invoke(long window, int entered) {
+                inWindow = entered == GLFW_TRUE;
             }
         });
         glfwSetMouseButtonCallback(handle, mouseButtonCallback = new GLFWMouseButtonCallback() {
@@ -64,15 +63,6 @@ public class Mouse {
     }
 
     public static void terminate() {
-        if (cursorPosCallback != null) {
-            cursorPosCallback.free();
-        }
-        if (cursorEnterCallback != null) {
-            cursorEnterCallback.free();
-        }
-        if (mouseButtonCallback != null) {
-            mouseButtonCallback.free();
-        }
     }
 
     private Mouse() {

@@ -1,4 +1,4 @@
-package org.noviv.dystcore.objects;
+package org.noviv.dystcore.graphics;
 
 public abstract class DystObject {
     

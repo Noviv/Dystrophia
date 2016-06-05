@@ -1,17 +1,16 @@
 package org.noviv.dystcore;
 
+import org.noviv.dystcore.graphics.DystObject;
 import java.util.ArrayList;
 import org.lwjgl.opengl.GL;
 import org.noviv.dystcore.accessories.DystTimer;
-import org.noviv.dystcore.objects.DystObject;
-import org.noviv.dystcore.accessories.Keyboard;
 import org.noviv.dystcore.exceptions.DystException;
+import org.noviv.dystcore.accessories.Screen;
+import org.noviv.dystcore.accessories.SystemAccessories;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
-import org.noviv.dystcore.accessories.Screen;
-import org.noviv.dystcore.accessories.SystemAccessories;
 
 public class DystEngine {
 
@@ -54,7 +53,7 @@ public class DystEngine {
         int width = 1280;
         int height = 720;
 
-        if (!glfwInit()) {
+        if (glfwInit() != GLFW_TRUE) {
             throw new DystException("Could not init GLFW");
         }
 
@@ -68,13 +67,14 @@ public class DystEngine {
         GL.createCapabilities();
 
         //post init
-        resize();
+        SystemAccessories.init(handle, width, height);
+        objects.forEach((object) -> object.init());
 
         glfwSetWindowPos(handle, Screen.getCenterX(width), Screen.getCenterY(height));
 
+        resize();
+
         //finalize
-        SystemAccessories.init(handle, width, height);
-        objects.forEach((object) -> object.init());
         running = true;
     }
 
@@ -88,7 +88,7 @@ public class DystEngine {
 
     private void renderLoop() {
         while (running) {
-            if (glfwWindowShouldClose(handle)) {
+            if (glfwWindowShouldClose(handle) == GLFW_TRUE) {
                 running = false;
             }
             //pre render
@@ -128,14 +128,5 @@ public class DystEngine {
 
     private void resize() {
         glViewport(0, 0, Screen.getWidth(), Screen.getHeight());
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
-        if (Screen.getAspectRatio() >= 1.0) {
-            glOrtho(-Screen.getAspectRatio(), Screen.getAspectRatio(), -1, 1, 0, 1);
-        } else {
-            glOrtho(1.0 / -Screen.getAspectRatio(), 1.0 / Screen.getAspectRatio(), -1, 1, 0, 1);
-        }
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
     }
 }

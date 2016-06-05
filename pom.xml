@@ -14,7 +14,6 @@
         <natives.version>LATEST</natives.version>
         <joml.version>LATEST</joml.version>
         <pngdecoder.version>LATEST</pngdecoder.version>
-        <commons.version>LATEST</commons.version>
     </properties>
     
     <repositories>

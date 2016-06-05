@@ -89,12 +89,6 @@ public class Screen {
     }
 
     public static void terminate() {
-        if (wsCallback != null) {
-            wsCallback.free();
-        }
-        if (fbCallback != null) {
-            fbCallback.free();
-        }
     }
 
     private Screen() {
