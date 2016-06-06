@@ -10,10 +10,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <lwjgl.version>LATEST</lwjgl.version>
-        <natives.version>LATEST</natives.version>
-        <joml.version>LATEST</joml.version>
-        <pngdecoder.version>LATEST</pngdecoder.version>
+        <lwjgl.version>3.0.0b</lwjgl.version>
+        <natives.version>3.0.0b</natives.version>
+        <joml.version>1.8.0</joml.version>
+        <pngdecoder.version>1.0</pngdecoder.version>
     </properties>
     
     <repositories>

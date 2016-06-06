@@ -1,17 +1,14 @@
 package org.noviv.dystrophia;
 
-import java.nio.DoubleBuffer;
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
 import org.noviv.dystcore.graphics.DystObject;
+import org.noviv.dystcore.graphics.buffers.VertexBufferObject;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
 
 public class Squar extends DystObject {
 
-    private int vboID;
+    private VertexBufferObject vbo;
 
     @Override
     public void init() {
@@ -20,16 +17,8 @@ public class Squar extends DystObject {
             1.0, -1.0, 0.0,
             0.0, 1.0, 0.0
         };
-
-        DoubleBuffer vtxBuffer = BufferUtils.createDoubleBuffer(vertices.length);
-        vtxBuffer.put(vertices);
-        vtxBuffer.flip();
-
-        vboID = glGenBuffers();
-        glBindBuffer(GL_ARRAY_BUFFER, vboID);
-        glBufferData(GL_ARRAY_BUFFER, vtxBuffer, GL_STATIC_DRAW);
-
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        vbo = new VertexBufferObject();
+        vbo.gen(vertices);
     }
 
     @Override
@@ -39,10 +28,12 @@ public class Squar extends DystObject {
     @Override
     public void render() {
         glEnableVertexAttribArray(0);
-        glBindBuffer(GL_ARRAY_BUFFER, vboID);
-        glVertexAttribPointer(0, 3, GL_DOUBLE, false, 0, 0);
+        vbo.enable();
 
-        glDrawArrays(GL11.GL_TRIANGLES, 0, 3);
+        glVertexAttribPointer(0, 3, GL_DOUBLE, false, 0, 0);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+
+        vbo.disable();
         glDisableVertexAttribArray(0);
     }
 }

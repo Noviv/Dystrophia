@@ -1,4 +1,4 @@
-package org.noviv.dystcore.accessories;
+package org.noviv.dystcore.accessories.utilities;
 
 public class DystTimer {
 

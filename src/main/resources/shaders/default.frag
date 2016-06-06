@@ -1,9 +1,7 @@
 #version 330 core
- 
-in vec4 pass_Color;
- 
-out vec4 out_Color;
+
+out vec3 color;
  
 void main(void) {
-    out_Color = pass_Color;
+    color = vec3(1, 0, 0);
 }

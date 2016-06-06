@@ -1,4 +1,4 @@
-package org.noviv.dystcore.accessories;
+package org.noviv.dystcore.accessories.system;
 
 public class SystemAccessories {
 

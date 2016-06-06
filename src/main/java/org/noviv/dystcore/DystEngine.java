@@ -2,11 +2,14 @@ package org.noviv.dystcore;
 
 import org.noviv.dystcore.graphics.DystObject;
 import java.util.ArrayList;
+import org.joml.Matrix4f;
+import org.joml.Quaternionf;
 import org.lwjgl.opengl.GL;
-import org.noviv.dystcore.accessories.DystTimer;
+import org.noviv.dystcore.graphics.shaders.Shader;
+import org.noviv.dystcore.accessories.utilities.DystTimer;
 import org.noviv.dystcore.exceptions.DystException;
-import org.noviv.dystcore.accessories.Screen;
-import org.noviv.dystcore.accessories.SystemAccessories;
+import org.noviv.dystcore.accessories.system.Screen;
+import org.noviv.dystcore.accessories.system.SystemAccessories;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -18,6 +21,11 @@ public class DystEngine {
     private final Thread renderThread;
 
     private final ArrayList<DystObject> objects;
+
+    private Shader shader;
+    private Matrix4f model;
+    private Matrix4f view;
+    private Matrix4f projection;
 
     private long handle;
     private boolean running;
@@ -70,6 +78,11 @@ public class DystEngine {
         SystemAccessories.init(handle, width, height);
         objects.forEach((object) -> object.init());
 
+        shader = new Shader("default");
+        model = new Matrix4f().identity();
+        view = new Matrix4f().lookAt(4, 3, 3, 0, 0, 0, 0, 1, 0);
+        projection = new Matrix4f().perspective((float) Math.toRadians(45.0), (float) Screen.getAspectRatio(), 0.1f, 100);
+
         glfwSetWindowPos(handle, Screen.getCenterX(width), Screen.getCenterY(height));
 
         resize();
@@ -93,17 +106,24 @@ public class DystEngine {
             }
             //pre render
             glfwPollEvents();
-            glClear(GL_COLOR_BUFFER_BIT);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             if (Screen.isResized()) {
                 resize();
                 Screen.clear();
             }
 
+            shader.enable();
+            shader.setUniform("model", model);
+            shader.setUniform("view", view);
+            shader.setUniform("projection", projection);
+
             //render
             objects.forEach((object) -> object.render());
 
             //post render
+            shader.disable();
+
             glfwSwapBuffers(handle);
         }
 
