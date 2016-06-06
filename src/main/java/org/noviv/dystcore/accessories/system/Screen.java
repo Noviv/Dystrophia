@@ -10,8 +10,6 @@ public class Screen {
 
     private static final GLFWVidMode primaryVidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
-    private static GLFWWindowSizeCallback wsCallback;
-    private static GLFWFramebufferSizeCallback fbCallback;
     private static boolean resized;
     private static int width;
     private static int height;
@@ -24,7 +22,7 @@ public class Screen {
         width = iWidth;
         height = iHeight;
 
-        glfwSetWindowSizeCallback(handle, wsCallback = new GLFWWindowSizeCallback() {
+        glfwSetWindowSizeCallback(handle, new GLFWWindowSizeCallback() {
 
             @Override
             public void invoke(long window, int w, int h) {
@@ -34,7 +32,7 @@ public class Screen {
             }
         });
 
-        glfwSetFramebufferSizeCallback(handle, fbCallback = new GLFWFramebufferSizeCallback() {
+        glfwSetFramebufferSizeCallback(handle, new GLFWFramebufferSizeCallback() {
 
             @Override
             public void invoke(long window, int width, int height) {
@@ -86,9 +84,6 @@ public class Screen {
 
     public static int getCenterY(int height) {
         return (getPrimaryMonitorHeight() - height) / 2;
-    }
-
-    public static void terminate() {
     }
 
     private Screen() {
