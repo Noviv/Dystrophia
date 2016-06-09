@@ -17,6 +17,9 @@ public class Screen {
     private static int fbWidth;
     private static int fbHeight;
 
+    private static GLFWWindowSizeCallback wsCallback;
+    private static GLFWFramebufferSizeCallback fsCallback;
+
     public static void init(long handle, int iWidth, int iHeight) {
         resized = false;
         width = iWidth;
@@ -32,7 +35,7 @@ public class Screen {
             }
         });
 
-        glfwSetFramebufferSizeCallback(handle, new GLFWFramebufferSizeCallback() {
+        glfwSetFramebufferSizeCallback(handle, fsCallback = new GLFWFramebufferSizeCallback() {
 
             @Override
             public void invoke(long window, int width, int height) {

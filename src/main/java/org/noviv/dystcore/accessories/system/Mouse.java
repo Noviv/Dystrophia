@@ -19,29 +19,33 @@ public class Mouse {
     private static boolean leftMouseButton;
     private static boolean rightMouseButton;
 
+    private static GLFWCursorPosCallback cpCallback;
+    private static GLFWCursorEnterCallback ceCallback;
+    private static GLFWMouseButtonCallback mbCallback;
+
     public static void init(long handle) {
         DoubleBuffer xb = BufferUtils.createDoubleBuffer(1);
         DoubleBuffer yb = BufferUtils.createDoubleBuffer(1);
-        
+
         glfwGetCursorPos(handle, xb, yb);
-        
+
         prevX = x = xb.get();
         prevY = y = yb.get();
-        
-        glfwSetCursorPosCallback(handle, new GLFWCursorPosCallback() {
+
+        glfwSetCursorPosCallback(handle, cpCallback = new GLFWCursorPosCallback() {
             @Override
             public void invoke(long window, double xpos, double ypos) {
                 x = xpos;
                 y = ypos;
             }
         });
-        glfwSetCursorEnterCallback(handle, new GLFWCursorEnterCallback() {
+        glfwSetCursorEnterCallback(handle, ceCallback = new GLFWCursorEnterCallback() {
             @Override
             public void invoke(long window, int entered) {
                 inWindow = entered == GLFW_TRUE;
             }
         });
-        glfwSetMouseButtonCallback(handle, new GLFWMouseButtonCallback() {
+        glfwSetMouseButtonCallback(handle, mbCallback = new GLFWMouseButtonCallback() {
             @Override
             public void invoke(long window, int button, int action, int mods) {
                 leftMouseButton = button == GLFW_MOUSE_BUTTON_1 && action == GLFW_PRESS;

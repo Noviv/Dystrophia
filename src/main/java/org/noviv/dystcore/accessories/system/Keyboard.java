@@ -9,11 +9,13 @@ import static org.lwjgl.glfw.GLFW.glfwSetKeyCallback;
 public class Keyboard {
 
     private static boolean[] actions;
+    
+    private static GLFWKeyCallback kCallback;
 
     public static void init(long handle) {
         actions = new boolean[GLFW_KEY_LAST + 1];
 
-        glfwSetKeyCallback(handle, new GLFWKeyCallback() {
+        glfwSetKeyCallback(handle, kCallback = new GLFWKeyCallback() {
             @Override
             public void invoke(long window, int key, int scancode, int action, int mods) {
                 actions[key] = action != GLFW_RELEASE;
