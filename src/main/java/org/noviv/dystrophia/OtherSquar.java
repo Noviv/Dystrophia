@@ -2,7 +2,6 @@ package org.noviv.dystrophia;
 
 import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
-import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 import org.noviv.dystcore.graphics.DystObject;
 
@@ -11,44 +10,29 @@ import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
 
-public class Squar extends DystObject {
+public class OtherSquar extends DystObject {
 
     private int vaoID;
     private int vboID;
     private int iboID;
+    private int cboID;
 
     private int drawCount;
-
-    private Vector3f offset;
-
-    public Squar(Vector3f off) {
-        offset = off;
-    }
 
     @Override
     public void init() {
         double[] vertices = {
             // front
-            -1.0, -1.0, 1.0,
-            1.0, -1.0, 1.0,
-            1.0, 1.0, 1.0,
-            -1.0, 1.0, 1.0,
-            // back
+            -3.0, -3.0, -1.0,
+            -1.0, -3.0, -1.0,
             -1.0, -1.0, -1.0,
-            1.0, -1.0, -1.0,
-            1.0, 1.0, -1.0,
-            -1.0, 1.0, -1.0
+            -3.0, -1.0, -1.0,
+            // back
+            -3.0, -3.0, -3.0,
+            -1.0, -3.0, -3.0,
+            -1.0, -1.0, -3.0,
+            -3.0, -1.0, -3.0
         };
-
-        for (int i = 0; i < vertices.length; i++) {
-            if (i % 3 == 0) {
-                vertices[i] += offset.x;
-            } else if (i % 3 == 1) {
-                vertices[i] += offset.y;
-            } else {
-                vertices[i] += offset.z;
-            }
-        }
 
         byte[] indices = {
             // front

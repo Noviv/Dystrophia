@@ -10,6 +10,8 @@ import static org.lwjgl.glfw.GLFW.*;
 
 public class Mouse {
 
+    private static double sensitivity;
+
     private static double x;
     private static double y;
     private static double prevX;
@@ -24,6 +26,8 @@ public class Mouse {
     private static GLFWMouseButtonCallback mbCallback;
 
     public static void init(long handle) {
+        sensitivity = 0.3;
+        
         DoubleBuffer xb = BufferUtils.createDoubleBuffer(1);
         DoubleBuffer yb = BufferUtils.createDoubleBuffer(1);
 
@@ -53,6 +57,10 @@ public class Mouse {
             }
         });
     }
+    
+    public static void setSensitivity(double sens) {
+        sensitivity = sens;
+    }
 
     public static double getX() {
         return x;
@@ -65,13 +73,13 @@ public class Mouse {
     public static double getDX() {
         double dx = x - prevX;
         prevX = x;
-        return dx;
+        return dx * sensitivity;
     }
 
     public static double getDY() {
         double dy = y - prevY;
         prevY = y;
-        return dy;
+        return dy * sensitivity;
     }
 
     public static boolean inWindow() {

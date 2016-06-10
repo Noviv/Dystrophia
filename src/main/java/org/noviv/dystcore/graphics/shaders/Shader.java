@@ -71,7 +71,7 @@ public class Shader {
 
         glUniformMatrix4fv(getLocation(name), false, buffer);
     }
-
+    
     public void disable() {
         glUseProgram(0);
     }

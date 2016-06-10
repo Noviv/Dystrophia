@@ -5,7 +5,7 @@ public class DystTimer {
     private final double startTime;
 
     private double lastTime;
-    
+
     private double timeTrigger;
     private double totalTrigger;
 
@@ -20,9 +20,11 @@ public class DystTimer {
     }
 
     public double getDT() {
-        double dt = getTime() - lastTime;
+        return getTime() - lastTime;
+    }
+
+    public void cycle() {
         lastTime = getTime();
-        return dt;
     }
 
     public void setTimeTrigger(double trigger) {

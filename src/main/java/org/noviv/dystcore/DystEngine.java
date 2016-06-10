@@ -2,9 +2,9 @@ package org.noviv.dystcore;
 
 import org.noviv.dystcore.graphics.DystObject;
 import java.util.ArrayList;
-import org.joml.Matrix4f;
 import org.lwjgl.Version;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GLUtil;
 import org.lwjgl.opengl.GLCapabilities;
 import org.noviv.dystcore.accessories.system.Mouse;
 import org.noviv.dystcore.graphics.shaders.Shader;
@@ -15,7 +15,6 @@ import org.noviv.dystcore.accessories.utilities.DystTimer;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
-import org.lwjgl.opengl.GLUtil;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class DystEngine {
@@ -23,18 +22,17 @@ public class DystEngine {
     private final Thread engineThread;
 
     private final ArrayList<DystObject> objects;
-    private final DystCamera camera;
+    private final DystPlayer camera;
     private final DystTimer gameTimer;
 
     private Shader shader;
-    private Matrix4f view;
 
     private long handle;
     private boolean running;
 
     public DystEngine() {
         objects = new ArrayList<>();
-        camera = new DystCamera();
+        camera = new DystPlayer();
         gameTimer = new DystTimer();
 
         engineThread = new Thread(() -> {
@@ -86,7 +84,6 @@ public class DystEngine {
         objects.forEach((object) -> object.init());
 
         shader = new Shader("default");
-        view = new Matrix4f().lookAt(0, 0, 5, 0, 0, 0, 0, 1, 0);
 
         resize();
 
@@ -99,7 +96,7 @@ public class DystEngine {
             glfwSetWindowShouldClose(handle, GLFW_TRUE);
         }
 
-        camera.calc();
+        camera.update(gameTimer.getDT());
 
         objects.forEach((object) -> object.update(gameTimer.getDT()));
     }
@@ -123,7 +120,6 @@ public class DystEngine {
             }
 
             shader.enable();
-            shader.setUniform("view", view);
             shader.setUniform("projection", camera.getProjection());
 
             //render
@@ -133,8 +129,8 @@ public class DystEngine {
 
             //post render
             shader.disable();
-
             glfwSwapBuffers(handle);
+            gameTimer.cycle();
         }
 
         terminate();
