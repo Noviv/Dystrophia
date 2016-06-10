@@ -23,17 +23,18 @@ public class DystEngine {
     private final Thread engineThread;
 
     private final ArrayList<DystObject> objects;
+    private final DystCamera camera;
     private final DystTimer gameTimer;
 
     private Shader shader;
     private Matrix4f view;
-    private Matrix4f projection;
 
     private long handle;
     private boolean running;
 
     public DystEngine() {
         objects = new ArrayList<>();
+        camera = new DystCamera();
         gameTimer = new DystTimer();
 
         engineThread = new Thread(() -> {
@@ -70,6 +71,8 @@ public class DystEngine {
         }
 
         glfwMakeContextCurrent(handle);
+        glfwSetWindowPos(handle, Screen.getCenterX(width), Screen.getCenterY(height));
+        glfwSetInputMode(handle, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         GLCapabilities caps = GL.createCapabilities();
 
         //post init
@@ -84,9 +87,6 @@ public class DystEngine {
 
         shader = new Shader("default");
         view = new Matrix4f().lookAt(0, 0, 5, 0, 0, 0, 0, 1, 0);
-        projection = new Matrix4f().perspective((float) Math.toRadians(75.0), (float) Screen.getAspectRatio(), 0.1f, 100);
-
-        glfwSetWindowPos(handle, Screen.getCenterX(width), Screen.getCenterY(height));
 
         resize();
 
@@ -94,20 +94,13 @@ public class DystEngine {
         running = true;
     }
 
-    float rotx;
-    float roty;
-
     private void update() {
         if (Keyboard.isKeyActive(GLFW_KEY_ESCAPE)) {
             glfwSetWindowShouldClose(handle, GLFW_TRUE);
         }
 
-        rotx += 0.002 * Mouse.getDY();
-        roty += 0.002 * Mouse.getDX();
+        camera.calc();
 
-        projection.identity().perspective((float) Math.toRadians(75.0), (float) Screen.getAspectRatio(), 0.1f, 100);
-        projection.rotateX(rotx);
-        projection.rotateY(roty);
         objects.forEach((object) -> object.update(gameTimer.getDT()));
     }
 
@@ -131,7 +124,7 @@ public class DystEngine {
 
             shader.enable();
             shader.setUniform("view", view);
-            shader.setUniform("projection", projection);
+            shader.setUniform("projection", camera.getProjection());
 
             //render
             objects.forEach((object) -> {
