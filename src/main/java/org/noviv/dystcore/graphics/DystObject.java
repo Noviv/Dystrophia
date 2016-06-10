@@ -7,4 +7,6 @@ public abstract class DystObject {
     public abstract void update(double dt);
 
     public abstract void render();
+    
+    public abstract void terminate();
 }

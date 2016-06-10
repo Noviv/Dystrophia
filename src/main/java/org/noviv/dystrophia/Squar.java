@@ -97,4 +97,8 @@ public class Squar extends DystObject {
         glDisableVertexAttribArray(0);
         glBindVertexArray(0);
     }
+
+    @Override
+    public void terminate() {
+    }
 }

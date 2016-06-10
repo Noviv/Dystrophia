@@ -25,7 +25,7 @@ public class Screen {
         width = iWidth;
         height = iHeight;
 
-        glfwSetWindowSizeCallback(handle, new GLFWWindowSizeCallback() {
+        glfwSetWindowSizeCallback(handle, wsCallback = new GLFWWindowSizeCallback() {
 
             @Override
             public void invoke(long window, int w, int h) {

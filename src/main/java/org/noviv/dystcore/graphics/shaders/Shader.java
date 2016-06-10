@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.nio.FloatBuffer;
 import org.joml.Matrix4f;
-import org.joml.Quaternionf;
 import org.lwjgl.BufferUtils;
 import org.noviv.dystcore.exceptions.DystException;
 
