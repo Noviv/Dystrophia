@@ -75,6 +75,8 @@ public class DystEngine {
 
         //post init
         GLUtil.setupDebugMessageCallback(System.err);
+        glEnable(GL_DEPTH_TEST);
+        glDepthFunc(GL_LESS);
 
         glClearColor(0.9f, 0.9f, 0.9f, 1.0f);
 

@@ -1,13 +1,16 @@
 #version 330 core
 
-layout(location = 0) in vec3 position;
+layout(location = 0) in vec3 in_Position;
 
-in vec4 in_Color;
-out vec4 out_Color;
+out vec3 pass_Color;
 
 uniform mat4 projection;
 
 void main(void) {
-    gl_Position = projection * vec4(position, 1.0);
-    out_Color = in_Color;
+    gl_Position = projection * vec4(in_Position, 1.0);
+    if (in_Position.x >= -1.0 && in_Position.x <= 1.0) {
+        pass_Color = vec3(0.0, 1.0, 0.0);
+    } else {
+        pass_Color = vec3(1.0, 0.0, 0.0);
+    }
 }

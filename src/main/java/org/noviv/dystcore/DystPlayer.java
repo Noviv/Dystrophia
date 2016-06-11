@@ -6,9 +6,9 @@ import org.joml.Vector3f;
 import org.noviv.dystcore.accessories.system.Keyboard;
 import org.noviv.dystcore.accessories.system.Mouse;
 import org.noviv.dystcore.accessories.system.Screen;
+import org.noviv.dystcore.accessories.utilities.DystUtil;
 
 import static org.lwjgl.glfw.GLFW.*;
-import org.noviv.dystcore.accessories.utilities.DystUtil;
 
 public class DystPlayer {
 
@@ -30,8 +30,6 @@ public class DystPlayer {
 
         t_position = new Vector3f();
         projection = new Matrix4f();
-        
-        position.z = -2;
     }
 
     public void update(double dt) {
