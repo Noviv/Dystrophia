@@ -9,7 +9,7 @@ import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
 
-public class MeshBufferObject {
+public class MeshBuffer {
 
     private DoubleBuffer vtxBuffer;
     private IntBuffer idxBuffer;

@@ -1,21 +1,20 @@
 package org.noviv.dystrophia;
 
-import java.nio.DoubleBuffer;
-import java.nio.IntBuffer;
 import org.joml.Vector3f;
-import org.lwjgl.BufferUtils;
 import org.noviv.dystcore.graphics.DystObject;
-import org.noviv.dystcore.graphics.buffers.MeshBufferObject;
+import org.noviv.dystcore.graphics.buffers.ArrayBuffer;
+import org.noviv.dystcore.graphics.buffers.MeshBuffer;
+import org.noviv.dystcore.graphics.matrices.Matrix;
 
 public class Squar extends DystObject {
 
-    private MeshBufferObject mbo;
+    private MeshBuffer mbo;
 
     public Squar(Vector3f pos, Vector3f col) {
         position = pos;
         color = col;
 
-        mbo = new MeshBufferObject();
+        mbo = new MeshBuffer();
     }
 
     @Override
@@ -76,6 +75,10 @@ public class Squar extends DystObject {
             colors[i * 4 + 1] = color.y;
             colors[i * 4 + 2] = color.z;
         }
+
+        ArrayBuffer vertexBuffer = new ArrayBuffer(vertices, 3);
+        vertexBuffer.rotate(new Vector3f(45, 0, 0));
+        vertices = vertexBuffer.getLinearMatrix();
 
         mbo.genVtx(vertices);
         mbo.genIdx(indices);
