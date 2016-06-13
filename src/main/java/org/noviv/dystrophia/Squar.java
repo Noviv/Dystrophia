@@ -1,28 +1,21 @@
 package org.noviv.dystrophia;
 
-import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
+import java.nio.IntBuffer;
 import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 import org.noviv.dystcore.graphics.DystObject;
-
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL15.*;
-import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL30.*;
+import org.noviv.dystcore.graphics.buffers.MeshBufferObject;
 
 public class Squar extends DystObject {
 
-    private int vaoID;
-    private int vboID;
-    private int iboID;
+    private MeshBufferObject mbo;
 
-    private int drawCount;
+    public Squar(Vector3f pos, Vector3f col) {
+        position = pos;
+        color = col;
 
-    private Vector3f offset;
-
-    public Squar(Vector3f off) {
-        offset = off;
+        mbo = new MeshBufferObject();
     }
 
     @Override
@@ -40,17 +33,7 @@ public class Squar extends DystObject {
             -1.0, 1.0, -1.0
         };
 
-        for (int i = 0; i < vertices.length; i++) {
-            if (i % 3 == 0) {
-                vertices[i] += offset.x;
-            } else if (i % 3 == 1) {
-                vertices[i] += offset.y;
-            } else {
-                vertices[i] += offset.z;
-            }
-        }
-
-        byte[] indices = {
+        int[] indices = {
             // front
             0, 1, 2,
             2, 3, 0,
@@ -71,31 +54,33 @@ public class Squar extends DystObject {
             6, 7, 3
         };
 
-        drawCount = indices.length;
+        double[] colors = {
+            1.0, 0.0, 0.0, 1.0,
+            1.0, 0.0, 0.0, 1.0,
+            1.0, 0.0, 0.0, 1.0,
+            1.0, 0.0, 0.0, 1.0,
+            1.0, 0.0, 0.0, 1.0,
+            1.0, 0.0, 0.0, 1.0,
+            1.0, 0.0, 0.0, 1.0,
+            1.0, 0.0, 0.0, 1.0
+        };
 
-        DoubleBuffer vtxBuffer = BufferUtils.createDoubleBuffer(vertices.length);
-        vtxBuffer.put(vertices);
-        vtxBuffer.flip();
+        for (int i = 0; i < vertices.length / 3; i++) {
+            vertices[i * 3 + 0] += position.x;
+            vertices[i * 3 + 1] += position.y;
+            vertices[i * 3 + 2] += position.z;
+        }
 
-        ByteBuffer idxBuffer = BufferUtils.createByteBuffer(indices.length);
-        idxBuffer.put(indices);
-        idxBuffer.flip();
+        for (int i = 0; i < colors.length / 4; i++) {
+            colors[i * 4 + 0] = color.x;
+            colors[i * 4 + 1] = color.y;
+            colors[i * 4 + 2] = color.z;
+        }
 
-        vaoID = glGenVertexArrays();
-        glBindVertexArray(vaoID);
-
-        vboID = glGenBuffers();
-        glBindBuffer(GL_ARRAY_BUFFER, vboID);
-        glBufferData(GL_ARRAY_BUFFER, vtxBuffer, GL_STATIC_DRAW);
-        glVertexAttribPointer(0, 3, GL_DOUBLE, false, 0, 0);
-
-        iboID = glGenBuffers();
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboID);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, idxBuffer, GL_STATIC_DRAW);
-
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glBindVertexArray(0);
+        mbo.genVtx(vertices);
+        mbo.genIdx(indices);
+        mbo.genCol(colors);
+        mbo.init();
     }
 
     @Override
@@ -104,15 +89,7 @@ public class Squar extends DystObject {
 
     @Override
     public void render() {
-        glBindVertexArray(vaoID);
-        glEnableVertexAttribArray(0);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboID);
-
-        glDrawElements(GL_TRIANGLES, drawCount, GL_UNSIGNED_BYTE, 0);
-
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-        glDisableVertexAttribArray(0);
-        glBindVertexArray(0);
+        mbo.render();
     }
 
     @Override
