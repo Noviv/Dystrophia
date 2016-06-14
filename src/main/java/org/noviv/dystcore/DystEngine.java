@@ -44,6 +44,7 @@ public class DystEngine {
     }
 
     public void run() {
+        running = true;
         System.out.println("LWJGL Version " + Version.getVersion());
         engineThread.start();
     }
@@ -53,6 +54,10 @@ public class DystEngine {
             throw new DystException("Added a null object");
         }
         objects.add(object);
+    }
+
+    public boolean isRunning() {
+        return running;
     }
 
     private void init() {
@@ -96,9 +101,6 @@ public class DystEngine {
         shader = new Shader("default");
 
         resize();
-
-        //finalize
-        running = true;
     }
 
     private void update() {
@@ -134,6 +136,7 @@ public class DystEngine {
 
             //render
             objects.forEach((object) -> {
+                shader.setUniform("model", object.getModel());
                 object.render();
             });
 
