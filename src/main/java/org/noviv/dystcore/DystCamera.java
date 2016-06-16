@@ -10,19 +10,19 @@ import org.noviv.dystcore.accessories.utilities.DystUtil;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-public class DystPlayer {
+public class DystCamera {
 
     private final Vector3f position;
     private final Vector3d velocity;
     private double yaw;
     private double pitch;
 
-    private double speed;
+    private final double speed;
 
     private final Vector3f t_position;
     private final Matrix4f projection;
 
-    public DystPlayer() {
+    public DystCamera() {
         position = new Vector3f();
         velocity = new Vector3d();
 

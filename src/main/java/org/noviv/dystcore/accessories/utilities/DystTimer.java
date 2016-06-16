@@ -20,11 +20,9 @@ public class DystTimer {
     }
 
     public double getDT() {
-        return getTime() - lastTime;
-    }
-
-    public void cycle() {
+        double dt = getTime() - lastTime;
         lastTime = getTime();
+        return dt;
     }
 
     public void setTimeTrigger(double trigger) {

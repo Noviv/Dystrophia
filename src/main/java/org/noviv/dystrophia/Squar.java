@@ -6,11 +6,9 @@ import org.noviv.dystcore.graphics.buffers.MeshBuffer;
 
 public class Squar extends DystObject {
 
-    private MeshBuffer mbo;
+    private final MeshBuffer mbo;
 
-    public Squar(Vector3f col) {
-        color = col;
-
+    public Squar() {
         mbo = new MeshBuffer();
     }
 
@@ -50,17 +48,6 @@ public class Squar extends DystObject {
             6, 7, 3
         };
 
-        double[] colors = {
-            color.x, color.y, color.z, 1.0,
-            color.x, color.y, color.z, 1.0,
-            color.x, color.y, color.z, 1.0,
-            color.x, color.y, color.z, 1.0,
-            color.x, color.y, color.z, 1.0,
-            color.x, color.y, color.z, 1.0,
-            color.x, color.y, color.z, 1.0,
-            color.x, color.y, color.z, 1.0
-        };
-
         for (int i = 0; i < vertices.length / 3; i++) {
             vertices[i * 3 + 0] += position.x;
             vertices[i * 3 + 1] += position.y;
@@ -69,7 +56,6 @@ public class Squar extends DystObject {
 
         mbo.genVtx(vertices);
         mbo.genIdx(indices);
-        mbo.genCol(colors);
         mbo.init();
     }
 

@@ -13,12 +13,10 @@ public class MeshBuffer {
 
     private DoubleBuffer vtxBuffer;
     private IntBuffer idxBuffer;
-    private DoubleBuffer colBuffer;
 
     private int vaoID;
     private int vboID;
     private int iboID;
-    private int cboID;
 
     private int drawCount;
 
@@ -36,12 +34,6 @@ public class MeshBuffer {
         idxBuffer.flip();
     }
 
-    public void genCol(double[] colors) {
-        colBuffer = BufferUtils.createDoubleBuffer(colors.length);
-        colBuffer.put(colors);
-        colBuffer.flip();
-    }
-
     public void init() {
         vaoID = glGenVertexArrays();
         glBindVertexArray(vaoID);
@@ -54,11 +46,6 @@ public class MeshBuffer {
         iboID = glGenBuffers();
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboID);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, idxBuffer, GL_STATIC_DRAW);
-
-        cboID = glGenBuffers();
-        glBindBuffer(GL_ARRAY_BUFFER, cboID);
-        glBufferData(GL_ARRAY_BUFFER, colBuffer, GL_STATIC_DRAW);
-        glVertexAttribPointer(1, 4, GL_DOUBLE, false, 0, 0);
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
         glBindBuffer(GL_ARRAY_BUFFER, 0);

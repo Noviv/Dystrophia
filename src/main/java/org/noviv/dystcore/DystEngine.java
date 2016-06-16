@@ -23,7 +23,7 @@ public class DystEngine {
     private final Thread engineThread;
 
     private final ArrayList<DystObject> objects;
-    private final DystPlayer camera;
+    private final DystCamera camera;
     private final DystTimer gameTimer;
 
     private Shader shader;
@@ -33,7 +33,7 @@ public class DystEngine {
 
     public DystEngine() {
         objects = new ArrayList<>();
-        camera = new DystPlayer();
+        camera = new DystCamera();
         gameTimer = new DystTimer();
 
         engineThread = new Thread(() -> {
@@ -44,6 +44,9 @@ public class DystEngine {
     }
 
     public void run() {
+        if (isRunning()) {
+            throw new DystException("DystEngine already running!");
+        }
         running = true;
         System.out.println("LWJGL Version " + Version.getVersion());
         engineThread.start();
@@ -108,9 +111,10 @@ public class DystEngine {
             glfwSetWindowShouldClose(handle, GLFW_TRUE);
         }
 
-        camera.update(gameTimer.getDT());
+        double dt = gameTimer.getDT();
 
-        objects.forEach((object) -> object.update(gameTimer.getDT()));
+        camera.update(dt);
+        objects.forEach((object) -> object.update(dt));
     }
 
     private void renderLoop() {
@@ -137,13 +141,13 @@ public class DystEngine {
             //render
             objects.forEach((object) -> {
                 shader.setUniform("model", object.getModel());
+                shader.setUniform("color", object.getColor());
                 object.render();
             });
 
-//            post render
+            //post render
             shader.disable();
             glfwSwapBuffers(handle);
-            gameTimer.cycle();
         }
 
         terminate();
