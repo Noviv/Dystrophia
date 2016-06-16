@@ -1,6 +1,5 @@
 package org.noviv.dystrophia;
 
-import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.noviv.dystcore.DystEngine;
 import org.noviv.dystcore.accessories.utilities.DystTimer;

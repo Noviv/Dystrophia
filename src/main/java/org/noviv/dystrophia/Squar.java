@@ -51,26 +51,20 @@ public class Squar extends DystObject {
         };
 
         double[] colors = {
-            1.0, 0.0, 0.0, 1.0,
-            1.0, 0.0, 0.0, 1.0,
-            1.0, 0.0, 0.0, 1.0,
-            1.0, 0.0, 0.0, 1.0,
-            1.0, 0.0, 0.0, 1.0,
-            1.0, 0.0, 0.0, 1.0,
-            1.0, 0.0, 0.0, 1.0,
-            1.0, 0.0, 0.0, 1.0
+            color.x, color.y, color.z, 1.0,
+            color.x, color.y, color.z, 1.0,
+            color.x, color.y, color.z, 1.0,
+            color.x, color.y, color.z, 1.0,
+            color.x, color.y, color.z, 1.0,
+            color.x, color.y, color.z, 1.0,
+            color.x, color.y, color.z, 1.0,
+            color.x, color.y, color.z, 1.0
         };
 
         for (int i = 0; i < vertices.length / 3; i++) {
             vertices[i * 3 + 0] += position.x;
             vertices[i * 3 + 1] += position.y;
             vertices[i * 3 + 2] += position.z;
-        }
-
-        for (int i = 0; i < colors.length / 4; i++) {
-            colors[i * 4 + 0] = color.x;
-            colors[i * 4 + 1] = color.y;
-            colors[i * 4 + 2] = color.z;
         }
 
         mbo.genVtx(vertices);

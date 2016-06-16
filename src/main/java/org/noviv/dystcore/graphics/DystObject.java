@@ -23,16 +23,20 @@ public abstract class DystObject {
         return model;
     }
 
+    public final Vector3f getColor() {
+        return color;
+    }
+
     public final void rotateX(float degrees) {
         model.rotateAffine((float) Math.toRadians(degrees), position.x, position.y, position.z);
         rotation.add(degrees, 0, 0);
     }
-    
+
     public final void rotateY(float degrees) {
         model.rotateAffine((float) Math.toRadians(degrees), position.x, position.y, position.z);
         rotation.add(degrees, 0, 0);
     }
-    
+
     public final void rotateZ(float degrees) {
         model.rotateAffine((float) Math.toRadians(degrees), position.x, position.y, position.z);
         rotation.add(0, 0, degrees);
@@ -41,5 +45,9 @@ public abstract class DystObject {
     public final void move(Vector3f offset) {
         model.translate(offset);
         position.add(offset);
+    }
+
+    public final void setColor(Vector3f col) {
+        color = col;
     }
 }

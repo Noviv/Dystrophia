@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.nio.FloatBuffer;
 import org.joml.Matrix4f;
+import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 import org.noviv.dystcore.exceptions.DystException;
 
@@ -70,6 +71,14 @@ public class Shader {
         buffer.rewind();
 
         glUniformMatrix4fv(getLocation(name), false, buffer);
+    }
+    
+    public void setUniform(String name, Vector3f value) {
+        FloatBuffer buffer = BufferUtils.createFloatBuffer(3);
+        value.get(buffer);
+        buffer.rewind();
+        
+        glUniform3fv(getLocation(name), buffer);
     }
     
     public void disable() {
