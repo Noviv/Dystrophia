@@ -14,7 +14,7 @@ public class Main {
         int i = 0;
         for (int x = -5; x <= 5; x++) {
             for (int z = -5; z <= 5; z++) {
-                Squar square = new Squar();
+                Squar square = new Squar(false);
                 square.setColor(i % 2 == 0 ? color1 : color2);
                 square.move(new Vector3f(x, -1, z));
                 engine.addObject(square);
@@ -25,16 +25,15 @@ public class Main {
         DystTimer timer = new DystTimer();
         timer.setTimeTrigger(0.001);
 
-        Squar square = new Squar();
+        Squar square = new Squar(true);
         square.setColor(color2);
-        square.move(new Vector3f(0, 1, 0));
+        square.move(new Vector3f(2, 3, 4));
         engine.addObject(square);
         engine.run();
 
-        while (engine.isRunning()) {
+        while (true) {
             if (timer.isTriggered()) {
-                square.rotateX(.1f);
-                square.move(new Vector3f(0, (float) (0.005 * Math.cos(10 * timer.getTime())), 0));
+                square.rotateX(0.05f);
             }
         }
     }

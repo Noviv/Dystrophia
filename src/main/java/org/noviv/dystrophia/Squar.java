@@ -1,15 +1,18 @@
 package org.noviv.dystrophia;
 
-import org.joml.Vector3f;
+import static org.lwjgl.opengl.GL11.*;
 import org.noviv.dystcore.graphics.DystObject;
 import org.noviv.dystcore.graphics.buffers.MeshBuffer;
 
 public class Squar extends DystObject {
 
     private final MeshBuffer mbo;
+    
+    private boolean renderStuff;
 
-    public Squar() {
+    public Squar(boolean render) {
         mbo = new MeshBuffer();
+        renderStuff = render;
     }
 
     @Override
@@ -64,8 +67,16 @@ public class Squar extends DystObject {
     }
 
     @Override
-    public void render() {
+    public void _render() {
         mbo.render();
+        
+        if (renderStuff) {
+            glBegin(GL_LINES);
+            glLineWidth(2.5f);
+            glVertex3f(0, 0, 0);
+            glVertex3f(position.x, position.y, position.z);
+            glEnd();
+        }
     }
 
     @Override

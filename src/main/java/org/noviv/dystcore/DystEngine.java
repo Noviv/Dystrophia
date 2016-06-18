@@ -107,8 +107,8 @@ public class DystEngine {
     }
 
     private void update() {
-        if (Keyboard.isKeyActive(GLFW_KEY_ESCAPE)) {
-            glfwSetWindowShouldClose(handle, GLFW_TRUE);
+        if (glfwWindowShouldClose(handle) == GLFW_TRUE || Keyboard.isKeyActive(GLFW_KEY_ESCAPE)) {
+            running = false;
         }
 
         double dt = gameTimer.getDT();
@@ -119,10 +119,6 @@ public class DystEngine {
 
     private void renderLoop() {
         while (running) {
-            if (glfwWindowShouldClose(handle) == GLFW_TRUE) {
-                running = false;
-            }
-
             //update
             glfwPollEvents();
             update();
@@ -155,7 +151,7 @@ public class DystEngine {
 
     private void terminate() {
         running = false;
-
+        
         objects.forEach((object) -> object.terminate());
 
         try {
@@ -166,6 +162,10 @@ public class DystEngine {
 
         glfwDestroyWindow(handle);
         glfwTerminate();
+
+        System.out.println("Terminated DystEngine");
+        
+        System.exit(0);
     }
 
     private void resize() {
