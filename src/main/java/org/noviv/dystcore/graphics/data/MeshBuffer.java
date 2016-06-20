@@ -1,4 +1,4 @@
-package org.noviv.dystcore.graphics.buffers;
+package org.noviv.dystcore.graphics.data;
 
 import java.nio.DoubleBuffer;
 import java.nio.IntBuffer;

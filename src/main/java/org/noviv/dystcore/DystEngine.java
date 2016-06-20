@@ -85,11 +85,8 @@ public class DystEngine {
 
         //post init
         GLUtil.setupDebugMessageCallback(System.err);
-        glEnable(GL_TEXTURE_2D);
         glEnable(GL_DEPTH_TEST);
         glDepthFunc(GL_LESS);
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         if (caps.OpenGL30 || caps.GL_ARB_framebuffer_sRGB || caps.GL_EXT_framebuffer_sRGB) {
             glEnable(GL_FRAMEBUFFER_SRGB);
         }
@@ -151,7 +148,7 @@ public class DystEngine {
 
     private void terminate() {
         running = false;
-        
+
         objects.forEach((object) -> object.terminate());
 
         try {
@@ -164,7 +161,7 @@ public class DystEngine {
         glfwTerminate();
 
         System.out.println("Terminated DystEngine");
-        
+
         System.exit(0);
     }
 

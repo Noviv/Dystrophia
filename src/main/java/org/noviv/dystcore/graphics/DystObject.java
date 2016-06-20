@@ -2,7 +2,6 @@ package org.noviv.dystcore.graphics;
 
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
-import org.lwjgl.opengl.GL11;
 
 public abstract class DystObject {
 
@@ -16,13 +15,7 @@ public abstract class DystObject {
 
     public abstract void update(double dt);
 
-    public final void render() {
-        GL11.glTranslatef(-position.x, -position.y, -position.z);
-        _render();
-        GL11.glTranslatef(position.x, position.y, position.z);
-    }
-
-    protected abstract void _render();
+    public abstract void render();
 
     public abstract void terminate();
 

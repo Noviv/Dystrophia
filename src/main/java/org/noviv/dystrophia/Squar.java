@@ -2,12 +2,12 @@ package org.noviv.dystrophia;
 
 import static org.lwjgl.opengl.GL11.*;
 import org.noviv.dystcore.graphics.DystObject;
-import org.noviv.dystcore.graphics.buffers.MeshBuffer;
+import org.noviv.dystcore.graphics.data.MeshBuffer;
 
 public class Squar extends DystObject {
 
     private final MeshBuffer mbo;
-    
+
     private boolean renderStuff;
 
     public Squar(boolean render) {
@@ -67,12 +67,11 @@ public class Squar extends DystObject {
     }
 
     @Override
-    public void _render() {
+    public void render() {
         mbo.render();
-        
+
         if (renderStuff) {
             glBegin(GL_LINES);
-            glLineWidth(2.5f);
             glVertex3f(0, 0, 0);
             glVertex3f(position.x, position.y, position.z);
             glEnd();
