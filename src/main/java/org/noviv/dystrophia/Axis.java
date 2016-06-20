@@ -16,7 +16,6 @@ public class Axis extends DystObject {
 
     @Override
     public void render() {
-        glColor3f(1.0f, 0.0f, 0.0f);
         glBegin(GL_LINES);
         glVertex3f(-10, 0, -.01f);
         glVertex3f(10, 0, -.01f);

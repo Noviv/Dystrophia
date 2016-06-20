@@ -23,7 +23,7 @@ public class DystCamera {
     private final Matrix4f projection;
 
     public DystCamera() {
-        position = new Vector3f(2, 1.1f, -2);
+        position = new Vector3f(2, 2.1f, -2);
         velocity = new Vector3d();
 
         t_position = new Vector3f();
@@ -66,10 +66,10 @@ public class DystCamera {
         if (Keyboard.isKeyActive(GLFW_KEY_SPACE)) {
             velocity.y = 100;
         }
-        if (position.y > 1) {
+        if (position.y > 2) {
             velocity.y -= 1000 * 0.005;
         } else {
-            position.y = 1;
+            position.y = 2;
         }
         position.y += velocity.y * 0.001;
 
