@@ -2,7 +2,7 @@ package org.noviv.dystcore.graphics.matrices;
 
 import org.noviv.dystcore.exceptions.DystException;
 
-public class Matrix {
+public final class MatrixHelper {
 
     public static double dot(double[] x, double[] y) {
         if (x.length != y.length) {
@@ -110,5 +110,8 @@ public class Matrix {
             }
         }
         return true;
+    }
+
+    private MatrixHelper() {
     }
 }

@@ -17,26 +17,14 @@ public class Axis extends DystObject {
     @Override
     public void render() {
         glBegin(GL_LINES);
-        glVertex3f(-10, 0, -.01f);
-        glVertex3f(10, 0, -.01f);
         glVertex3f(-10, 0, 0);
         glVertex3f(10, 0, 0);
-        glVertex3f(-10, 0, 0.01f);
-        glVertex3f(10, 0, 0.01f);
 
-        glVertex3f(-.01f, -10, 0);
-        glVertex3f(-.01f, 10, 0);
         glVertex3f(0, -10, 0);
         glVertex3f(0, 10, 0);
-        glVertex3f(0.01f, -10, 0);
-        glVertex3f(0.01f, 10, 0);
 
-        glVertex3f(-.01f, 0, -10);
-        glVertex3f(-.01f, 0, 10);
         glVertex3f(0, 0, -10);
         glVertex3f(0, 0, 10);
-        glVertex3f(0.01f, 0, -10);
-        glVertex3f(0.01f, 0, 10);
         glEnd();
     }
 
