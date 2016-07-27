@@ -79,7 +79,7 @@ public class DystEngine {
 
         glfwMakeContextCurrent(handle);
         glfwSetWindowPos(handle, Screen.getCenterX(width), Screen.getCenterY(height));
-        glfwSetInputMode(handle, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+//        glfwSetInputMode(handle, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         glfwSwapInterval(1);
         GLCapabilities caps = GL.createCapabilities();
 

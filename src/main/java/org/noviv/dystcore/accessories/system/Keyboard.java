@@ -9,7 +9,7 @@ import static org.lwjgl.glfw.GLFW.glfwSetKeyCallback;
 public class Keyboard {
 
     private static boolean[] actions;
-    
+
     private static GLFWKeyCallback kCallback;
 
     public static void init(long handle) {

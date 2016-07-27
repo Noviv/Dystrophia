@@ -27,7 +27,7 @@ public class Mouse {
 
     public static void init(long handle) {
         sensitivity = 0.3;
-        
+
         DoubleBuffer xb = BufferUtils.createDoubleBuffer(1);
         DoubleBuffer yb = BufferUtils.createDoubleBuffer(1);
 
@@ -57,7 +57,7 @@ public class Mouse {
             }
         });
     }
-    
+
     public static void setSensitivity(double sens) {
         sensitivity = sens;
     }
