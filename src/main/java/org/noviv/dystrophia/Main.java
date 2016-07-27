@@ -15,6 +15,9 @@ public class Main {
         square.setColor(new Vector3f(0.5f, 0.1f, 0.9f));
         square.move(new Vector3f(0.5f, 0.5f, 0.5f));
         engine.addObject(square);
+        
+        HUD hud = new HUD();
+        engine.addObject(hud);
 
         engine.run();
     }
