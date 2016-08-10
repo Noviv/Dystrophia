@@ -22,7 +22,8 @@ public class DystEngine {
 
     private final Thread engineThread;
 
-    private final ArrayList<DystObject> objects;
+    private final ArrayList<DystObject> objects_3d;
+    private final ArrayList<DystObject> objects_2d;
     private final DystCamera camera;
     private final DystTimer gameTimer;
 
@@ -32,7 +33,8 @@ public class DystEngine {
     private boolean running;
 
     public DystEngine() {
-        objects = new ArrayList<>();
+        objects_3d = new ArrayList<>();
+        objects_2d = new ArrayList<>();
         camera = new DystCamera();
         gameTimer = new DystTimer();
 
@@ -52,11 +54,18 @@ public class DystEngine {
         engineThread.start();
     }
 
-    public void addObject(DystObject object) {
-        if (object == null) {
-            throw new DystException("Added a null object");
+    public void addObject2D(DystObject object) {
+        if (object == null || isRunning()) {
+            throw new DystException("Error adding object");
         }
-        objects.add(object);
+        objects_2d.add(object);
+    }
+
+    public void addObject3D(DystObject object) {
+        if (object == null || isRunning()) {
+            throw new DystException("Error adding object");
+        }
+        objects_3d.add(object);
     }
 
     public boolean isRunning() {
@@ -96,7 +105,8 @@ public class DystEngine {
         Keyboard.init(handle);
         Screen.init(handle, width, height);
         Mouse.init(handle);
-        objects.forEach((object) -> object.init());
+        objects_2d.forEach((object) -> object.init());
+        objects_3d.forEach((object) -> object.init());
 
         shader = new Shader("default");
 
@@ -111,7 +121,8 @@ public class DystEngine {
         double dt = gameTimer.getDT();
 
         camera.update(dt);
-        objects.forEach((object) -> object.update(dt));
+        objects_2d.forEach((object) -> object.update(dt));
+        objects_3d.forEach((object) -> object.update(dt));
     }
 
     private void renderLoop() {
@@ -128,11 +139,15 @@ public class DystEngine {
                 Screen.clear();
             }
 
+            objects_2d.forEach((object) -> {
+                object.render();
+            });
+
             shader.enable();
             shader.setUniform("projection", camera.getProjection());
 
             //render
-            objects.forEach((object) -> {
+            objects_3d.forEach((object) -> {
                 shader.setUniform("model", object.getModel());
                 shader.setUniform("color", object.getColor());
                 object.render();
@@ -149,7 +164,8 @@ public class DystEngine {
     private void terminate() {
         running = false;
 
-        objects.forEach((object) -> object.terminate());
+        objects_2d.forEach((object) -> object.terminate());
+        objects_3d.forEach((object) -> object.terminate());
 
         try {
             engineThread.interrupt();

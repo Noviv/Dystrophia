@@ -9,15 +9,15 @@ public class Main {
         DystEngine engine = new DystEngine();
 
         Axis axis = new Axis();
-        engine.addObject(axis);
+        engine.addObject3D(axis);
 
         Squar square = new Squar();
         square.setColor(new Vector3f(0.5f, 0.1f, 0.9f));
         square.move(new Vector3f(0.5f, 0.5f, 0.5f));
-        engine.addObject(square);
-        
+        engine.addObject3D(square);
+
         HUD hud = new HUD();
-        engine.addObject(hud);
+        engine.addObject2D(hud);
 
         engine.run();
     }
