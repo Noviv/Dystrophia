@@ -2,6 +2,7 @@ package org.noviv.dystrophia;
 
 import org.joml.Vector3f;
 import org.noviv.dystcore.DystEngine;
+import org.noviv.dystcore.graphics.DystText;
 
 public class Main {
 
@@ -15,9 +16,9 @@ public class Main {
         square.setColor(new Vector3f(0.5f, 0.1f, 0.9f));
         square.move(new Vector3f(0.5f, 0.5f, 0.5f));
         engine.addObject3D(square);
-
-        HUD hud = new HUD();
-        engine.addObject2D(hud);
+        
+        DystText text = new DystText("hi", 0, 0);
+        engine.addObject2D(text);
 
         engine.run();
     }
