@@ -1,4 +1,4 @@
-package org.noviv.dystrophia;
+package org.noviv.dystrophia.objects;
 
 import org.noviv.dystcore.graphics.DystObject;
 

@@ -1,18 +1,16 @@
-package org.noviv.dystrophia;
+package org.noviv.dystrophia.objects;
 
 import org.noviv.dystcore.graphics.DystObject;
 import org.noviv.dystcore.graphics.data.MeshBuffer;
 
 public class Squar extends DystObject {
 
-    private final MeshBuffer mbo;
-
-    public Squar() {
-        mbo = new MeshBuffer();
-    }
+    private MeshBuffer mbo;
 
     @Override
     public void init() {
+        mbo = new MeshBuffer();
+
         double[] vertices = {
             // front
             -0.5, -0.5, 0.5,

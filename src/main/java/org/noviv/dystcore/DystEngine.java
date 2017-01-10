@@ -117,6 +117,16 @@ public class DystEngine {
         if (glfwWindowShouldClose(handle) == GLFW_TRUE || Keyboard.isKeyActive(GLFW_KEY_ESCAPE)) {
             running = false;
         }
+        
+        if (Mouse.isMouseRightButton()) {
+            if (glfwGetInputMode(handle, GLFW_CURSOR) == GLFW_CURSOR_DISABLED) {
+                glfwSetInputMode(handle, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+                Mouse.setSensitivity(0);
+            } else {
+                glfwSetInputMode(handle, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+                Mouse.setSensitivity(0.3);
+            }
+        }
 
         double dt = gameTimer.getDT();
 
